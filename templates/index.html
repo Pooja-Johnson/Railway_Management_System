@@ -9,24 +9,21 @@
 <body>
     <div>
         <h1>
-            Trains List
+            Dashboard
         </h1>
-        {% if trains %}
-        <table id="all-students">
-            <tr>
-                <th>ID</th>
-                <th> Name</th>
-            </tr>
-            {% for train in trains %}
-            <tr>
-                <td>{{train.train_id}}</td>
-                <td>{{train.train_name}}</td>
-            </tr>
-            {% endfor %}
-        </table>
-        {% else %}
-        No train found.
-        {% endif %}
+        <p>Welcome</p>
+        <form action="/book" method="get">
+            <button>Book Tickets</button>
+        </form>
+        <form action="/cancel" method="get">
+            <button>Cancel Tickets</button>
+        </form>
+        <form action="/profile" method="get">
+            <button>Profile</button>
+        </form>
+        <form action="/logout" method="get">
+            <button>Logout</button>
+        </form>
     </div>
 </body>
 </html>

@@ -1,8 +1,10 @@
+
 import os
-from flask import Flask, request, url_for, redirect, render_template
+from flask import Flask, request, url_for, redirect, render_template, flash
 from flask_sqlalchemy import SQLAlchemy
 cd = os.path.abspath(os.path.dirname(__file__))
 app = Flask(__name__)
+app.config['SECRET_KEY'] = 'secret-key'
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///' + \
     os.path.join(cd, 'railway.sqlite3')
 #app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///.../railway.sqlite3'
@@ -67,12 +69,107 @@ class FoodOrder(db.Model):
     station_name = db.Column(db.String)  # foreign key
 
 
+global logged
+logged = False
+global cur_user
+cur_user = None
 # db.create_all()          need to call initially only once to create tables
 
+
 @app.route('/')
-def home():
-    train = Train.query.all()
-    return render_template('index.html', trains=train)
+def dashboard():
+    if not cur_user:
+        return render_template('landing.html')
+    return render_template('index.html')
+
+
+@app.route('/login', methods=['POST', 'GET'])
+def login():
+    if request.method == 'POST':
+        email = request.form['email_id']
+        password = request.form.get('pass')
+        print(password)
+        user = db.session.query(User).filter(
+            User.email == email, User.password == password).first()
+        if user:
+            print(user)
+            global logged
+            logged = True
+            global cur_user
+            cur_user = user
+            return redirect(url_for('dashboard'))
+        else:
+            flash('Wrong password or email id')
+            return render_template('login.html')
+    else:
+        return render_template('login.html')
+
+
+@app.route('/register', methods=['POST', 'GET'])
+def register():
+    if request.method == 'POST':
+        user_name = request.form['user_name']
+        email = request.form['email_id']
+        password = request.form.get('pass')
+        user = db.session.query(User).filter(
+            User.email == email).first()
+        if user:
+            flash('email id already exists. Try again')
+            return render_template('register.html')
+        else:
+            new_user = User(user_name=user_name,
+                            email=email, password=password)
+            db.session.add(new_user)
+            db.session.commit()
+            global cur_user
+            cur_user = new_user
+            print(cur_user)
+            return redirect(url_for('dashboard'))
+    else:
+        return render_template('register.html')
+
+
+@app.route('/logout')
+def logout():
+    global cur_user
+    cur_user = None
+    return redirect(url_for('dashboard'))
+
+
+@app.route('/book', methods=['POST', 'GET'])
+def book_tickets():
+    if request.method == 'POST':
+        start = request.form['start']
+        end = request.form['end']
+        print(end)
+        # avail_trains = db.session.query(Train)#????
+        avail_trains = ['TA', 'TB', 'TC']  # temporarily
+        print(avail_trains)
+        return render_template('train_list.html', trains=avail_trains)
+    else:
+        stations = db.session.query(Station).all()
+        return render_template('book_tickets.html', stations=stations)
+
+
+@app.route('/book/<string:train_name>', methods=['POST', 'GET'])
+def book_train(train_name):
+    if request.method == 'POST':
+        return
+    return 'view train'
+
+
+@app.route('/cancel', methods=['POST', 'GET'])
+def cancel_tickets():
+    if request.method == 'POST':
+        return redirect(url_for('dashboard'))
+    else:
+        return render_template('cancel_tickets.html')
+
+
+@app.route('/profile', methods=['GET'])
+def profile():
+    print(cur_user)
+    return render_template('profile.html')
 
 
 if __name__ == '__main__':
