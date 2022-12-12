@@ -141,11 +141,18 @@ def book_tickets():
     if request.method == 'POST':
         start = request.form['start']
         end = request.form['end']
-        print(end)
+        # print(end)
         # avail_trains = db.session.query(Train)#????
         avail_trains = ['TA', 'TB', 'TC']  # temporarily
-        print(avail_trains)
-        return render_template('train_list.html', trains=avail_trains)
+        avail = []
+        for train in avail_trains:
+            savail = db.session.query(Train).filter(
+                Train.train_name == train).first().seats_no
+            # print(savail)
+            # list of available seats in the required trains
+            avail.append(savail)
+        # print(avail_trains)
+        return render_template('train_list.html', trains=avail_trains, avail=avail)
     else:
         stations = db.session.query(Station).all()
         return render_template('book_tickets.html', stations=stations)
@@ -154,8 +161,24 @@ def book_tickets():
 @app.route('/book/<string:train_name>', methods=['POST', 'GET'])
 def book_train(train_name):
     if request.method == 'POST':
-        return
-    return 'view train'
+        need = request.form.getlist('seat_book')
+        print(need)
+        # train = Train(train_name=train_name,seats_no=)
+
+        return 'hi'
+    seats = db.session.query(Seats).all()
+    avail_seats = []
+    if train_name == 'TA':
+        for seat in seats:
+            avail_seats.append(seat.availTA)
+    elif train_name == 'TB':
+        for seat in seats:
+            avail_seats.append(seat.availTB)
+    else:
+        for seat in seats:
+            avail_seats.append(seat.availTC)
+
+    return render_template('view_train.html', seats=avail_seats, train_name=train_name)
 
 
 @app.route('/cancel', methods=['POST', 'GET'])

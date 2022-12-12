@@ -7,7 +7,7 @@
     <title>Ticket Booking</title>
 </head>
 <body>
-    <form action="{{ url_for('book') }}" method='post'>
+    <form action="{{ url_for('book_tickets') }}" method='post'>
         <label for="start">From:</label>
         <select name="start">
             {% for station in stations %}
