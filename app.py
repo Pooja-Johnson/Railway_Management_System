@@ -8,7 +8,7 @@ cd = os.path.abspath(os.path.dirname(__file__))
 app = Flask(__name__)
 app.config['SECRET_KEY'] = 'secret-key'
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///' + \
-    os.path.join(cd, 'railway.sqlite3')
+    os.path.join(cd, 'railway (1).sqlite3')
 # app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///.../railway.sqlite3'
 login_manager = LoginManager()
 login_manager.login_view = 'login'
@@ -22,8 +22,8 @@ app.app_context().push()
 class Train(db.Model):
     train_id = db.Column(db.Integer, primary_key=True)
     train_name = db.Column(db.String, unique=True, nullable=False)
-    source = db.Column(db.Integer)  # foreign key
-    dest = db.Column(db.Integer)  # foreign key
+    source = db.Column(db.String)  # foreign key
+    dest = db.Column(db.String)  # foreign key
     seats_no = db.Column(db.Integer)
 
 
@@ -49,7 +49,7 @@ class User(UserMixin, db.Model):
     password = db.Column(db.String, nullable=False)
     gender = db.Column(db.String)
     age = db.Column(db.Integer)
-    mob_no = db.Column(db.Integer)
+    mob_no = db.Column(db.Integer, nullable=False)
 
     def get_id(self):
         return (self.user_id)
@@ -64,6 +64,7 @@ class Ticket(db.Model):
     d_point = db.Column(db.String)
     seat_no = db.Column(db.Integer)  # foreign key
     fare = db.Column(db.Integer)
+    train_id = db.Column(db.String)
 
 
 class FoodOrder(db.Model):
@@ -77,7 +78,7 @@ class FoodOrder(db.Model):
     station_name = db.Column(db.String)  # foreign key
 
 
-# db.create_all()  # need to call initially only once to create tables
+db.create_all()  # need to call initially only once to create tables
 
 
 @login_manager.user_loader
@@ -108,8 +109,8 @@ def login():
             login_user(user, remember=False)
             return redirect(url_for('dashboard'))
         else:
-            flash('Wrong password or email id')
-            return render_template('login.html')
+            mess = 'Wrong password or email id'
+            return render_template('login.html', mess=mess)
     else:
         return render_template('login.html')
 
@@ -120,6 +121,9 @@ def register():
         user_name = request.form['user_name']
         email = request.form['email_id']
         password = request.form.get('pass')
+        mob_no = request.form['Phone_No']
+        age = request.form['Age']
+        gender = request.form['Gender']
         user = db.session.query(User).filter(
             User.email == email).first()
         if user:
@@ -127,7 +131,7 @@ def register():
             return render_template('register.html')
         else:
             new_user = User(user_name=user_name,
-                            email=email, password=password)
+                            email=email, password=password, mob_no=mob_no, age=age, gender=gender)
             print(new_user)
 
             db.session.add(new_user)
@@ -148,22 +152,25 @@ def logout():
 @app.route('/book', methods=['POST', 'GET'])
 def book_tickets():
     if request.method == 'POST':
-        trains = ['TA', 'TB', 'TC']
+        trains = ['Rajdhani Express', 'Avantika Express', 'Kochuvelli Express']
         avail_trains = []
         start = request.form['start']
         end = request.form['end']
-
+        global sid
+        sid = int(start)
+        global eid
+        eid = int(end)
         for train in trains:
             Tavail = db.session.query(Station).all()
-            if train == 'TA':
+            if train == 'Rajdhani Express':
                 if Tavail[int(start)-1].TAarr and Tavail[int(end)-1].TAarr:
-                    avail_trains.append('TA')
-            elif train == 'TB':
+                    avail_trains.append('Rajdhani Express')
+            elif train == 'Avantika Express':
                 if Tavail[int(start)-1].TAarr and Tavail[int(end)-1].TBarr:
-                    avail_trains.append('TB')
+                    avail_trains.append('Avantika Express')
             else:
                 if Tavail[int(start)-1].TAarr and Tavail[int(end)-1].TCarr:
-                    avail_trains.append('TC')
+                    avail_trains.append('Kochuvelli Express')
 
         # print(avail_trains)
         avail = []
@@ -185,10 +192,12 @@ def view_train(train_name):
         # print(pass_no)
         seats = db.session.query(Seats).all()
         avail_seats = []
-        if train_name == 'TA':
+        global tname
+        tname = train_name
+        if train_name == 'Rajdhani Express':
             for seat in seats:
                 avail_seats.append(seat.availTA)
-        elif train_name == 'TB':
+        elif train_name == 'Avantika Express':
             for seat in seats:
                 avail_seats.append(seat.availTB)
         else:
@@ -203,24 +212,35 @@ def book_train(train_name):
     if request.method == 'POST':
         need = request.form.getlist('seat_book')
         names = request.form.getlist('Name')
+        genders = request.form.getlist('gender')
         # print(names)
         tot_avail_seats = db.session.query(Train).filter(
             Train.train_name == train_name).first()
         tot_avail_seats.seats_no = tot_avail_seats.seats_no - \
             len(need)  # train booking
         # print(tot_avail_seats.seats_no)
-
+        count = 0
+        global sid
+        global eid
         for name in names:
+            bpoint = db.session.query(Station).filter(
+                Station.station_id == sid).first()
+            dpoint = db.session.query(Station).filter(
+                Station.station_id == eid).first()
+            dist = dpoint.station_id-bpoint.station_id
+            global tname
+
             ticket = Ticket(user_id=current_user.user_id,
-                            name=name)  # ticket booking
+                            name=name, b_point=bpoint.station_name, d_point=dpoint.station_name, fare=dist*15, seat_no=need[count], gender=genders[count], train_name='Rajdhani Express')  # ticket booking
             db.session.add(ticket)
+            count = count+1
             # print(ticket)
         seats = db.session.query(Seats).all()
-        if train_name == 'TA':
+        if train_name == 'Rajdhani Express':
             for seat in seats:
                 if str(seat.seat_no) in need:
                     seat.availTA = 0
-        elif train_name == 'TB':
+        elif train_name == 'Avantika Express':
             for seat in seats:
                 if str(seat.seat_no) in need:
                     seat.availTB = 0
@@ -238,14 +258,19 @@ def order_food():
         item = request.form['item']
         category = request.form['category']
         qty = request.form['qty']
+        station = request.form['station']
+        tid = db.session.query(Train).filter(
+            Train.train_name == tname).first().train_id
         f_order = FoodOrder(user_id=current_user.user_id,
-                            item=item, category=category, qty=qty)
+                            item=item, category=category, qty=qty, train_id=tid, station_name=station, price=int(qty)*80)
         db.session.add(f_order)
         db.session.commit()
         return render_template('completion.html')
     items = ['Item1', 'Item2', 'Item3']
     categories = ['Breakfast', 'Lunch', 'Dinner']
-    return render_template('food_booking.html', items=items, categories=categories)
+    stations = ['Kasargod', 'Kannur', 'Kozhikode Main',
+                'Shoranur Junction', 'Thrissur', 'Ernakulam Junction', 'Alappuzha', 'Kollam Junction']
+    return render_template('food_booking.html', items=items, categories=categories, stations=stations)
 
 
 @app.route('/cancel', methods=['POST', 'GET'])
@@ -258,10 +283,13 @@ def cancel_tickets():
 
 @app.route('/profile', methods=['GET'])
 def profile():
-    # print(cur_user)
-    return render_template('profile.html')
+    tickets = db.session.query(Ticket).filter(
+        Ticket.user_id == current_user.user_id).all()
+    food = db.session.query(FoodOrder).filter(
+        FoodOrder.user_id == current_user.user_id).all()
+
+    return render_template('profile.html', user=current_user, tickets=tickets, food=food)
 
 
 if __name__ == '__main__':
-
     app.run(host='0.0.0.0', debug=True, port=8080)

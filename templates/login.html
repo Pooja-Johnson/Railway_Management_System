@@ -26,17 +26,13 @@
           <label for="loginPassword">Password</label>
         </div>
         <input type="submit" value="Submit" class="submit-btn" />
+        </br>
+        {% if mess %}
+        <p>{{mess}}</p>
+        {% endif %}
       </form>
-      {% with messages = get_flashed_messages() %}
-      {% if messages %}
-      <ul class=flashes>
-        {% for message in messages %}
-        <p>{{ message }}
-        <p>
-          {% endfor %}
-      </ul>
-      {% endif %}
-      {% endwith %}
+    
+      
       <div><a href="/register">Register</a></div>
       </div>
      

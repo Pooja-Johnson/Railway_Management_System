@@ -7,7 +7,7 @@
     <link rel="stylesheet" href="{{ url_for('static', filename='stylelogin.css') }}">
     <!--BOOTSTRAP LINK-->
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css">
-    <link rel="stylesheet" href="{{ url_for('static', filename='stylenavbar.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='booktickets.css') }}">
     <title>Ticket Booking</title>
 </head>
 <body>
@@ -18,21 +18,20 @@
     <div class="signup-content2">
     <form action="{{ url_for('book_tickets') }}" method='post'>
         
-        <label for="start">From:</label>
+        <label for="start"><b><font size = "4" color="white">From:</font></b></label>
         <select name="start" class="input bg-dark">
             {% for station in stations %}
             <option value={{station.station_id}}>{{station.station_name}}</option>
             {% endfor %}
         </select>
         <br />
-        <label for="end">To:</label>
+        <label for="end"><b><font size = "4" color="white">To                 :</font></label>
         <select name="end" class="input bg-dark">
             {% for station in stations %}
             <option value={{station.station_id}}>{{station.station_name}}</option>
             {% endfor %}
         </select>
         <br />
-        
         <input type="submit",value="Submit" class="submit-btn bg-warning">
         </div>
     </form>

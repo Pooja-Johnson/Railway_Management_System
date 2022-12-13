@@ -7,6 +7,56 @@
     <title>Profile</title>
 </head>
 <body>
-    
+    <p>Name:{{user.user_name}}</p>
+    <p>Email:{{user.email}}</p>
+    <p>Mobile:{{user.mob_no}}</p>
+    <h3>Currently booked tickets</h3>
+        <table>
+            <tr>
+                <th>Ticket Id</th>
+                <th>Name</th>
+                <th>Boarding Point</th>
+                <th>Deboarding Point</th>
+                <th>Seat no.</th>
+                <th>Fare</th>
+
+
+            </tr>
+            {% for ticket in tickets %}
+            <tr>
+                <td>{{ticket.ticket_id}}</td>
+                <td>{{ticket.name}}</td>
+                <td>{{ticket.b_point}}</td>
+                <td>{{ticket.d_point}}</td>
+                <td>{{ticket.seat_no}}</td>
+                <td>{{ticket.fare}}</td>
+                
+            </tr>
+            {% endfor %}
+        </table>
+    </br>
+    <h3>Food Order</h3>
+    <table>
+        <tr>
+            <th>Item</th>
+            <th>Category</th>
+            <th>Quantity</th>
+            <th>Station</th>
+            <th>Price</th>
+        </tr>
+        {% for foo in food %}
+        <tr>
+            <td>{{foo.item}}</td>
+            <td>{{foo.category}}</td>
+            <td>{{foo.qty}}</td>
+            <td>{{foo.station_name}}</td>
+            <td>{{foo.price}}</td>
+        </tr>
+        {% endfor %}
+        <tr>
+            <td>Total price:</td>
+        </tr>
+    </table>
+
 </body>
 </html>

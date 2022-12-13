@@ -8,7 +8,7 @@
 </head>
 <body>
     <p>Your Seats have been booked</p>
-    <h3>Order Food:</h3>
+    <h3>Order Food</h3>
     <form action="{{ url_for('order_food') }}" method='post'>
         <label for="item">Item:</label>
         <select name="item">
@@ -23,8 +23,16 @@
             <option value={{category}}>{{category}}</option>
             {% endfor %}
         </select>
+    </br>
         <label for="qty">Quantity:</label>
         <input type="text" name="qty" />
+        </br>
+        <label for="station">Station:</label>
+        <select name="station" class="input bg-dark">
+            {% for station in stations %}
+            <option value={{station}}>{{station}}</option>
+            {% endfor %}
+        </select>
         <br />
         <input type="submit" ,value="Submit">
     </form>
