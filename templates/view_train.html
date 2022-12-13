@@ -10,7 +10,8 @@
 
 <body>
     <div >
-        <form action='/book/{{train_name}}' method="post">
+        <h3>Choose seats from avail</h3>
+        <form action='{{ url_for('book_train' ,train_name=train_name) }}' method="post">
         {% for seat in seats %}
         {% if seat %}
         <li>
@@ -25,6 +26,15 @@
         </li>
         {% endif %}
         {% endfor %}
+        <div>
+            <h3>Enter passenger details:</h3>
+            {% for i in range(pass_no) %}
+            <p>Passenger{{i+1}}:</p>
+                <p><label for="name">Name:</label>
+                    <input type="text" name="Name" required/>
+                </p>
+            {% endfor %}
+        </div>
         <div>
             <input type="submit" value="Submit" />
         </div>

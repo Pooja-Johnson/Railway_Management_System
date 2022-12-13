@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Food</title>
+</head>
+<body>
+    <p>Your Seats have been booked</p>
+    <h3>Order Food:</h3>
+    <form action="{{ url_for('order_food') }}" method='post'>
+        <label for="item">Item:</label>
+        <select name="item">
+            {% for item in items %}
+            <option value={{item}}>{{item}}</option>
+            {% endfor %}
+        </select>
+        <br />
+        <label for="category">Category:</label>
+        <select name="category">
+            {% for category in categories%}
+            <option value={{category}}>{{category}}</option>
+            {% endfor %}
+        </select>
+        <label for="qty">Quantity:</label>
+        <input type="text" name="qty" />
+        <br />
+        <input type="submit" ,value="Submit">
+    </form>
+</body>
+</html>

@@ -7,9 +7,35 @@
     <title>Available trains</title>
 </head>
 <body>
-    {% for train in trains %}
-    <a href={{ url_for('book_train' ,train_name=train) }}>{{train}} </a>{{avail[loop.index-1]}}
-    <br/>
-    {% endfor %}
+    
+    <table>
+        <tr>
+            <th>Train Name</th>
+            <th>Source</th>
+            <th>Destination</th>
+            <th>Available Seats</th>
+        </tr>
+        {% for train in trains %}
+            <tr>
+            <td>{{train}}</td>
+            <td>{{avail[loop.index-1].source}}</td>
+            <td>{{avail[loop.index-1].dest}}</td>
+            <td>{{avail[loop.index-1].seats_no}}</td>
+             <td> 
+            <form action="{{ url_for('view_train' ,train_name=train) }}" method='post'>
+                <input type="submit" value="Book">
+            
+            </td>
+            <br />
+        </tr>
+        {% endfor %}
+    </table>
+        <label for="passengers">No of passengers:</label>
+        <select name="passengers">
+            {% for i in range(10) %}
+            <option value={{i+1}}>{{i+1}}</option>
+            {% endfor %}
+        </select>
+        </form>
 </body>
 </html>

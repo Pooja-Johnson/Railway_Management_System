@@ -1,0 +1,33 @@
+<div class="seat"></div>
+        <div class="seat"></div>
+        <div class="seat"></div>
+        <div class="seat"></div>
+        <div class="seat"></div>
+        <div class="seat"></div>
+        <div class="seat"></div>
+        <div class="seat"></div>
+
+
+        {{ url_for('book_train',train_name=train_name) }}
+
+
+
+        def book_train(train_name):
+    if request.method == 'POST':
+        need = request.form.getlist('seat_book')
+
+        tot_avail_seats = db.session.query(Train).filter(
+            Train.train_name == train_name).first().seats_no
+       # print(tot_avail_seats-len(need))
+        train = Train(train_name=train_name,
+                      seats_no=tot_avail_seats-len(need))  # train booking
+
+        return 'hi'
+
+
+        elif train_name == 'TB':
+            for seat in seats:
+                avail_seats.append(seat.availTB)
+        else:
+            for seat in seats:
+                avail_seats.append(seat.availTC)
