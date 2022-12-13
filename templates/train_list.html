@@ -22,20 +22,20 @@
             <td>{{avail[loop.index-1].dest}}</td>
             <td>{{avail[loop.index-1].seats_no}}</td>
              <td> 
-            <form action="{{ url_for('view_train' ,train_name=train) }}" method='post'>
+            <form action="/book/{{train}}" method='post'>
                 <input type="submit" value="Book">
-            
+            <label for="passengers">No of passengers:</label>
+            <select name="passengers">
+                {% for i in range(10) %}
+                <option value={{i+1}}>{{i+1}}</option>
+                {% endfor %}
+            </select>
+            </form>
             </td>
             <br />
         </tr>
         {% endfor %}
     </table>
-        <label for="passengers">No of passengers:</label>
-        <select name="passengers">
-            {% for i in range(10) %}
-            <option value={{i+1}}>{{i+1}}</option>
-            {% endfor %}
-        </select>
-        </form>
+        
 </body>
 </html>

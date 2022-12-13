@@ -82,16 +82,17 @@ class FoodOrder(db.Model):
 
 @login_manager.user_loader
 def load_user(user_id):
-    # since the user_id is just the primary key of our user table, use it in the query for the user
     return User.query.get(int(user_id))
 
 
 @app.route('/')
+def start():
+    return render_template('landing.html')
+
+
+@app.route('/dashboard')
 @login_required
 def dashboard():
-    if not current_user:
-        return render_template('landing.html')
-
     return render_template('index.html')
 
 
@@ -127,9 +128,11 @@ def register():
         else:
             new_user = User(user_name=user_name,
                             email=email, password=password)
+            print(new_user)
+
             db.session.add(new_user)
             db.session.commit()
-            login_user(user)
+            login_user(new_user)
             return redirect(url_for('dashboard'))
     else:
         return render_template('register.html')
@@ -139,7 +142,7 @@ def register():
 @login_required
 def logout():
     logout_user()
-    return redirect(url_for('dashboard'))
+    return redirect(url_for('start'))
 
 
 @app.route('/book', methods=['POST', 'GET'])
@@ -229,12 +232,20 @@ def book_train(train_name):
         return redirect(url_for('order_food'))
 
 
-@app.route('/food', methods=['POST', 'GET'])
+@app.route('/book/food', methods=['POST', 'GET'])
 def order_food():
-    # if request.method == 'POST':
-    # return render_template('food_booking.html')
-
-    return render_template('food_booking.html')
+    if request.method == 'POST':
+        item = request.form['item']
+        category = request.form['category']
+        qty = request.form['qty']
+        f_order = FoodOrder(user_id=current_user.user_id,
+                            item=item, category=category, qty=qty)
+        db.session.add(f_order)
+        db.session.commit()
+        return render_template('completion.html')
+    items = ['Item1', 'Item2', 'Item3']
+    categories = ['Breakfast', 'Lunch', 'Dinner']
+    return render_template('food_booking.html', items=items, categories=categories)
 
 
 @app.route('/cancel', methods=['POST', 'GET'])

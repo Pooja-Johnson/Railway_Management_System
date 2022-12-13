@@ -4,26 +4,27 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='stylenavbar.css') }}">
+    <title>Dashboard</title>
 </head>
 <body>
-    <div>
-        <h1>
-            Dashboard
-        </h1>
-        <p>Welcome</p>
-        <form action="/book" method="get">
-            <button>Book Tickets</button>
-        </form>
-        <form action="/cancel" method="get">
-            <button>Cancel Tickets</button>
-        </form>
-        <form action="/profile" method="get">
-            <button>Profile</button>
-        </form>
-        <form action="/logout" method="get">
-            <button>Logout</button>
-        </form>
+    <nav>
+        <div class="logo">
+            <p>BookMyTrain</p>
+            <ul>
+                <li><a href="/dashboard">Home</a></li>
+                <li><a href="/book">Book Tickets</a></li>
+                <li><a href="/cancel">Cancel Tickets</a></li>
+                <li><a href="/profile">History</a></li>
+                <li><a href="/logout">Logout</a></li>
+    
+    
+            </ul>
+        </div>
+    </nav>
+    <div class="content-items">
+        <img
+            src="https://cdn.dnaindia.com/sites/default/files/styles/full/public/2021/09/03/994454-955928-928749-indian-railway-irctc.jpg">
     </div>
 </body>
 </html>

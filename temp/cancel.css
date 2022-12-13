@@ -1,0 +1,49 @@
+.signup-form{
+    height:500px;
+    width:600px;
+    margin-top:10%;
+    margin-left:25%;
+}
+.Signup-head{
+    padding:8px;
+}
+body{
+    background-size: cover;
+  font-family: sans-serif;
+    background-image: url('https://media.istockphoto.com/id/154952126/photo/railroad-track-points.jpg?s=612x612&w=0&k=20&c=OraC8PicJcuSYoyompnPlfFu06NyL6Jn-54gvwXLFwg=');
+}
+
+.signup-content2 .input{
+    width:450px;
+    padding:10px;
+    margin:10px;
+    color:#fff;
+}
+.signup-content2 .tarikh{
+    margin:10px;
+    padding:10px;
+    color:#fff;
+}
+.signup-content2  .person{
+    padding:10px;
+    margin:10px;
+    color:#fff;
+    position:fixed;bottom:400px;
+}
+.signup-content2 .travel{
+    margin:20px 20px;
+    
+}
+.signup-content2 .travel2{
+    padding:5px;
+}
+.signup-content2 .submit-btn{
+    border:none;
+    outline:none;
+    width:200px;
+    padding:10px;
+    margin-left:200px;
+    position:fixed; left:390px; bottom:200px;
+    
+    
+}

@@ -6,9 +6,11 @@
         <div class="seat"></div>
         <div class="seat"></div>
         <div class="seat"></div>
-
-
+<input type="submit" value="Book">
+<form action="/book/{{train}}" method='post'>
         {{ url_for('book_train',train_name=train_name) }}
+
+        {{ url_for('view_train' ,train_name= train) }}
 
 
 

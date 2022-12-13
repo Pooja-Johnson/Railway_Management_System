@@ -4,15 +4,27 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Landing</title>
+    <title>Train mngt</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='stylenavbar.css') }}">
 </head>
 <body>
-    <form action="/login" method="get">
-        <button >Login</button>
-    </form>
-    <form action="/register" method="get">
-        <button>Register</button>
-    </form>
+    <nav>
+        <div class="logo">
+            <p>BookMyTrain</p>
+            <ul>
+                <li><a href="/dashboard">Home</a></li>
+                <li><a href="/login">Login</a></li>
+                <li><a href="/register">Register</a></li>
+    
+    
+            </ul>
+        </div>
+    </nav>
+    <div class="content-items">
+        <img
+            src="https://cdn.dnaindia.com/sites/default/files/styles/full/public/2021/09/03/994454-955928-928749-indian-railway-irctc.jpg">
+
+    </div>
     
 </body>
 </html>
