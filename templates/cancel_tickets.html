@@ -1,12 +1,60 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Ticket Cancellation</title>
+    <title>Cancel Tickets</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='cancel.css') }}">
+    <!--BOOTSTRAP LINK-->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css">
 </head>
+
 <body>
-    
+        <div class="signup-form bg-dark">
+
+            <div class="Signup-head bg-warning">
+                <h1>Cancel Your Ticket</h1>
+            </div>
+            <div class="signup-content2">
+            <center>
+                {% if tickets%}
+                <h3>Currently booked tickets</h3>
+                <table>
+                    <tr>
+                        <th>Ticket Id</th>
+                        <th>Train name</th>
+                        <th>Name</th>
+                        <th>Boarding Point</th>
+                        <th>Deboarding Point</th>
+                        <th>Seat no.</th>
+                        <th>Fare</th>
+                        <th>Cancel</th>
+                
+                
+                    </tr>
+                    <form action='{{ url_for('cancel_tickets') }}' method='post'>
+                    {% for ticket in tickets %}
+                    <tr>
+                        <td>{{ticket.ticket_id}}</td>
+                        <td>{{ticket.train_name}}</td>
+                        <td>{{ticket.name}}</td>
+                        <td>{{ticket.b_point}}</td>
+                        <td>{{ticket.d_point}}</td>
+                        <td>{{ticket.seat_no}}</td>
+                        <td>{{ticket.fare}}</td>
+                        <td><input type="checkbox" name="check" value="{{ticket.ticket_id}}"></td>
+                    </tr>
+                    {% endfor %}
+                </table>
+                <input type="submit" value="Submit" class="submit-btn bg-warning">
+                </form>
+                {% else %}
+                <p> No tickets booked yet</p>
+                {% endif %}
+                </center>
+            </div>
+        </div>
 </body>
+
 </html>

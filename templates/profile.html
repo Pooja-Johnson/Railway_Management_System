@@ -11,20 +11,23 @@
     <p>Email:{{user.email}}</p>
     <p>Mobile:{{user.mob_no}}</p>
     <h3>Currently booked tickets</h3>
+    {% if tickets%}
         <table>
             <tr>
                 <th>Ticket Id</th>
+                <th>Train name</th>
                 <th>Name</th>
                 <th>Boarding Point</th>
                 <th>Deboarding Point</th>
                 <th>Seat no.</th>
                 <th>Fare</th>
-
+                
 
             </tr>
             {% for ticket in tickets %}
             <tr>
                 <td>{{ticket.ticket_id}}</td>
+                <td>{{ticket.train_name}}</td>
                 <td>{{ticket.name}}</td>
                 <td>{{ticket.b_point}}</td>
                 <td>{{ticket.d_point}}</td>
@@ -33,8 +36,20 @@
                 
             </tr>
             {% endfor %}
+            <tr>
+                <td>Total Travel expense: </td>
+                <td> {{tickets|sum(attribute='fare')}}</td>
+            </tr>
         </table>
-    </br>
+        </br>
+        <a href="/cancel">Cancel Train Tickets</a>
+        {% else %}
+        <p> No tickets booked yet</p>
+        <a href="/book">Book Now!</a>
+        {% endif %}
+    
+</br>
+    {% if food%}
     <h3>Food Order</h3>
     <table>
         <tr>
@@ -54,9 +69,16 @@
         </tr>
         {% endfor %}
         <tr>
-            <td>Total price:</td>
+            <td>Total Food expense: </td>
+            <td>{{food|sum(attribute='price')}}</td>
         </tr>
     </table>
-
+    <a href="/cancel/food">Cancel Food Bookings</a>
+    </br>
+    {% endif %}
+    </br>
+    
+    </br>
+        <a href="/dashboard">Go Home</a>
 </body>
 </html>

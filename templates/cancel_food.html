@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cancel Tickets</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='cancel.css') }}">
+    <!--BOOTSTRAP LINK-->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css">
+</head>
+
+<body>
+    <div class="signup-form bg-dark">
+
+        <div class="Signup-head bg-warning">
+            <h1>Food Booking Cancellation</h1>
+        </div>
+        <div class="signup-content2">
+            <center>
+                <form action='{{ url_for('cancel_food') }}' method='post'>
+                    {% if food %}
+                    <h3>Food Order</h3>
+                    <table>
+                        <tr>
+                            <th>Item</th>
+                            <th>Category</th>
+                            <th>Quantity</th>
+                            <th>Station</th>
+                            <th>Price</th>
+                            <th>Cancel</th>
+                        </tr>
+                        {% for foo in food %}
+                        <tr>
+                            <td>{{foo.item}}</td>
+                            <td>{{foo.category}}</td>
+                            <td>{{foo.qty}}</td>
+                            <td>{{foo.station_name}}</td>
+                            <td>{{foo.price}}</td>
+                            <td><input type="checkbox" name="check" value="{{foo.order_id}}"></td>
+                        </tr>
+                        {% endfor %}
+                </table>
+                <input type="submit" value="Submit" class="submit-btn bg-warning">
+                </form>
+                {% else %}
+                <p> No food bookings as of now!</p>
+                {% endif %}
+            </center>
+        </div>
+    </div>
+</body>
+
+</html>

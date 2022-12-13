@@ -64,7 +64,7 @@ class Ticket(db.Model):
     d_point = db.Column(db.String)
     seat_no = db.Column(db.Integer)  # foreign key
     fare = db.Column(db.Integer)
-    train_id = db.Column(db.String)
+    train_name = db.Column(db.String)
 
 
 class FoodOrder(db.Model):
@@ -231,7 +231,7 @@ def book_train(train_name):
             global tname
 
             ticket = Ticket(user_id=current_user.user_id,
-                            name=name, b_point=bpoint.station_name, d_point=dpoint.station_name, fare=dist*15, seat_no=need[count], gender=genders[count], train_name='Rajdhani Express')  # ticket booking
+                            name=name, b_point=bpoint.station_name, d_point=dpoint.station_name, fare=dist*15, seat_no=need[count], gender=genders[count], train_name=tname)  # ticket booking
             db.session.add(ticket)
             count = count+1
             # print(ticket)
@@ -259,6 +259,7 @@ def order_food():
         category = request.form['category']
         qty = request.form['qty']
         station = request.form['station']
+        global tname
         tid = db.session.query(Train).filter(
             Train.train_name == tname).first().train_id
         f_order = FoodOrder(user_id=current_user.user_id,
@@ -276,9 +277,46 @@ def order_food():
 @app.route('/cancel', methods=['POST', 'GET'])
 def cancel_tickets():
     if request.method == 'POST':
-        return redirect(url_for('dashboard'))
+        can_tid = request.form.getlist('check')  # ticket id to be cancelled
+        print(can_tid)
+        for tid in can_tid:
+            tobj = db.session.query(Ticket).filter(
+                Ticket.ticket_id == tid).first()
+            seat = db.session.query(Seats).filter(
+                Seats.seat_no == tobj.seat_no).first()
+            train = db.session.query(Train).filter(
+                Train.train_name == tobj.train_name).first()
+            train.seats_no = train.seats_no+1  # updating available seats in train table
+            if tobj.train_name == 'Rajdhani Express':
+                seat.availTA = 1  # seat availability
+            elif tobj.train_name == 'Avantika Express':
+                seat.availTB = 1  # seat availability
+            else:
+                seat.availTC = 1  # seat availability
+            db.session.delete(tobj)  # delete ticket
+            db.session.commit()
+        return render_template('completecancel.html')
     else:
-        return render_template('cancel_tickets.html')
+        tickets = db.session.query(Ticket).filter(
+            Ticket.user_id == current_user.user_id).all()
+        return render_template('cancel_tickets.html', tickets=tickets)
+
+
+@app.route('/cancel/food', methods=['POST', 'GET'])
+def cancel_food():
+    if request.method == 'POST':
+        can_fid = request.form.getlist('check')  # order id to be cancelled
+        print(can_fid)
+        for fid in can_fid:
+            tobj = db.session.query(FoodOrder).filter(
+                FoodOrder.order_id == fid).first()
+            db.session.delete(tobj)  # delete food order
+            db.session.commit()
+        return render_template('completecancel.html')
+    else:
+        food = db.session.query(FoodOrder).filter(
+            FoodOrder.user_id == current_user.user_id).all()
+        return render_template('cancel_food.html', food=food)
 
 
 @app.route('/profile', methods=['GET'])
