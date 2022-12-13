@@ -231,8 +231,8 @@ def book_train(train_name):
 
 @app.route('/food', methods=['POST', 'GET'])
 def order_food():
-    if request.method == 'POST':
-        return render_template('food_booking.html')
+    # if request.method == 'POST':
+    # return render_template('food_booking.html')
 
     return render_template('food_booking.html')
 
