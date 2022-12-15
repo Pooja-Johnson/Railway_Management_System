@@ -6,7 +6,7 @@
 body {
   background-size: cover;
   font-family: sans-serif;
-  background-image: url('https://media.istockphoto.com/id/154952126/photo/railroad-track-points.jpg?s=612x612&w=0&k=20&c=OraC8PicJcuSYoyompnPlfFu06NyL6Jn-54gvwXLFwg=');
+  background-image: url('img6.png');
 }
 .login-wrapper {
   height: 100vh;
@@ -84,6 +84,7 @@ body {
 }
 .submit-btn {
   display: block;
+  margin-right: auto;
   margin-left: auto;
   border: none;
   outline: none;

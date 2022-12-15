@@ -4,15 +4,50 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
     <title>Profile</title>
+    <style>
+        
+        table,
+        td,
+        th {
+            border: 1px solid #ddd;
+            text-align: left;
+            
+        }
+    
+        table {
+            border-collapse: collapse;
+            width: 70%;
+        }
+        table.center {
+  margin-left:15%; 
+  margin-right: 50;
+}
+    
+        th,
+        td {
+            padding: 15px;
+        }
+        tr:nth-child(even) {
+  background-color: #f2f2f2;
+}
+.content {
+    text-align: center;
+}
+    </style>
 </head>
-<body>
-    <p>Name:{{user.user_name}}</p>
+<body >
+    <div class="w3-sidebar w3-light-grey w3-bar-block" style="width:15%">
+        <h3 class="w3-bar-item">Profile</h3>
+        <p>Name:{{user.user_name}}</p>
     <p>Email:{{user.email}}</p>
     <p>Mobile:{{user.mob_no}}</p>
+    </div>
+<div class="content" style="margin-left:15%">
     <h3>Currently booked tickets</h3>
     {% if tickets%}
-        <table>
+        <table class="center">
             <tr>
                 <th>Ticket Id</th>
                 <th>Train name</th>
@@ -32,13 +67,13 @@
                 <td>{{ticket.b_point}}</td>
                 <td>{{ticket.d_point}}</td>
                 <td>{{ticket.seat_no}}</td>
-                <td>{{ticket.fare}}</td>
+                <td >{{ticket.fare}}</td>
                 
             </tr>
             {% endfor %}
             <tr>
                 <td>Total Travel expense: </td>
-                <td> {{tickets|sum(attribute='fare')}}</td>
+                <td colspan="6" text-align="center"> {{tickets|sum(attribute='fare')}}</td>
             </tr>
         </table>
         </br>
@@ -49,9 +84,11 @@
         {% endif %}
     
 </br>
+</br>
+</br>
     {% if food%}
     <h3>Food Order</h3>
-    <table>
+    <table class="center">
         <tr>
             <th>Item</th>
             <th>Category</th>
@@ -70,15 +107,16 @@
         {% endfor %}
         <tr>
             <td>Total Food expense: </td>
-            <td>{{food|sum(attribute='price')}}</td>
+            <td colspan="5">{{food|sum(attribute='price')}}</td>
         </tr>
     </table>
-    <a href="/cancel/food">Cancel Food Bookings</a>
     </br>
+    <a href="/cancel/food">Cancel Food Bookings</a>
+    
     {% endif %}
     </br>
-    
     </br>
         <a href="/dashboard">Go Home</a>
+        </div>
 </body>
 </html>

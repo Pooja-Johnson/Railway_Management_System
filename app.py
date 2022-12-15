@@ -127,8 +127,8 @@ def register():
         user = db.session.query(User).filter(
             User.email == email).first()
         if user:
-            flash('email id already exists. Try again')
-            return render_template('register.html')
+            mess = 'email id already exists. Try again'
+            return render_template('register.html', mess=mess)
         else:
             new_user = User(user_name=user_name,
                             email=email, password=password, mob_no=mob_no, age=age, gender=gender)
@@ -203,6 +203,8 @@ def view_train(train_name):
         else:
             for seat in seats:
                 avail_seats.append(seat.availTC)
+        global p
+        p = pass_no
         return render_template('view_train.html', seats=avail_seats, train_name=train_name, pass_no=int(pass_no))
     return 'view get'
 
@@ -317,6 +319,12 @@ def cancel_food():
         food = db.session.query(FoodOrder).filter(
             FoodOrder.user_id == current_user.user_id).all()
         return render_template('cancel_food.html', food=food)
+
+
+# @app.route('/pass_detail', methods=['GET'])
+# def pass_d():
+ #   global p
+  #  return render_template('pass_detail.html', pass_no=int(p))
 
 
 @app.route('/profile', methods=['GET'])

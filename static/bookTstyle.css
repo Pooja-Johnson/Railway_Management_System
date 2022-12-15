@@ -51,6 +51,7 @@
     letter-spacing: 1px;
     margin-bottom: 2rem;
     color: white;
+    font-size: 25px;
   }
   .form .input-group {
     position: relative;
@@ -67,6 +68,39 @@
     background-color: transparent;
     color: inherit;
   }
+  .form .input-group select{
+        appearance: none;
+        outline: 0;
+        background: rgb(130, 133, 130);
+        background-image: none;
+        width: 300px;
+        height: 30px;
+        color: rgb(242, 237, 237);
+        cursor: pointer;
+        border: 1px solid rgb(236, 231, 231);
+        border-radius: 3px;
+        background-color: transparent;
+    color: inherit;
+        
+    
+  }
+  .form .input-group label {
+    width:460px;
+    padding:8px;
+    margin:5px;
+    color:rgb(8, 7, 7);
+    float:left;
+    background-color: transparent;
+    color: inherit;
+    
+  }/*
+  .form .input,label{
+    width:460px;
+    padding:8px;
+    margin:5px;
+    color:rgb(8, 7, 7);
+    float:left
+}/*
   .form .input-group label {
     position: absolute;
     top: 0;
@@ -76,16 +110,19 @@
     pointer-events: none;
     transition: 0.3s ease-out;
   }
+  8/
+  /*
   .form .input-group input:focus + label,
   .form .input-group input:valid + label {
     transform: translateY(-18px);
-    color: white;
+    color: rgb(8, 8, 8);
     font-size: 0.8rem;
   }
+  */
   .submit-btn {
     display: block;
-    margin-right: auto;
     margin-left: auto;
+    margin-right: auto;
     border: none;
     outline: none;
     background: #ff652f;

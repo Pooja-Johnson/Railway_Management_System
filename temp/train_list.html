@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Available trains</title>
+    
+</head>
+<body>
+    <table>
+        <tr>
+          <th>Company</th>
+          <th>Contact</th>
+          <th>Country</th>
+        </tr>
+        <tr>
+          <td>Alfreds Futterkiste</td>
+          <td>Maria Anders</td>
+          <td>Germany</td>
+        </tr>
+        <tr>
+          <td>Centro comercial Moctezuma</td>
+          <td>Francisco Chang</td>
+          <td>Mexico</td>
+        </tr>
+      </table>
+      
+    <table>
+        <tr>
+            <th>Train Name</th>
+            <th>Source</th>
+            <th>Destination</th>
+            <th>Available Seats</th>
+        </tr>
+        {% for train in trains %}
+            <tr>
+            <td>{{train}}</td>
+            <td>{{avail[loop.index-1].source}}</td>
+            <td>{{avail[loop.index-1].dest}}</td>
+            <td>{{avail[loop.index-1].seats_no}}</td>
+             <td> 
+            <form action="/book/{{train}}" method='post'>
+                <input type="submit" value="Book">
+            <label for="passengers">No of passengers:</label>
+            <select name="passengers">
+                {% for i in range(10) %}
+                <option value={{i+1}}>{{i+1}}</option>
+                {% endfor %}
+            </select>
+            </form>
+            </td>
+            <br />
+        </tr>
+        {% endfor %}
+    </table>
+        
+</body>
+</html>

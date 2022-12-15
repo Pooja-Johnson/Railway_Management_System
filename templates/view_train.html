@@ -5,33 +5,54 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="{{ url_for('static', filename='viewtrain.css') }}" />
     <title>Train View</title>
+
 </head>
 
 <body>
-    <div >
-        <h3>Choose seats from avail</h3>
+   <div class="cont">
+        <h2>Choose your seats</h2>
         <form action='{{ url_for('book_train' ,train_name=train_name) }}' method="post">
+           
         {% for seat in seats %}
         {% if seat %}
-        <li>
-            
+        
+       <div>
+            <label class="container c">
             <input type="checkbox" name="seat_book" id="book_seat" value="{{loop.index}}" />
-            <label for="book_seat">{{loop.index}}</label>
-        </li>
+            <label for="book_seat">
+                {% if loop.index<=9 %}
+                0{{loop.index}}
+                {% else %}
+                {{loop.index}}
+                {% endif %}
+            </label>
+            <span class="checkmark seat"></span>
+        </div>
         {% else %}
-        <li>
-            <input type="checkbox" disabled id="dis" />
-            <label for="dis">Occupied</label>
-        </li>
+        
+        <div>
+            <label class="container ">
+            <input  type="checkbox" disabled id="dis" />
+            <label  for="dis">{% if loop.index<=9 %} 0{{loop.index}} {% else %} {{loop.index}} {% endif %} </label>
+            <span class="checkmark seat occupied"></span>
+        </div>
+       
         {% endif %}
         {% endfor %}
-        <div>
+
+    </div>
+
+    <div class="login-wrapper">
+        <div class="form " >
             <h3>Enter passenger details:</h3>
             {% for i in range(pass_no) %}
-            <p>Passenger{{i+1}}:</p>
+            
+            <h4>Passenger{{i+1}}:</h4>
                 <p><label for="name">Name:</label>
                     <input type="text" name="Name" required/>
+                </br>
                     <label for="gender">Gender:</label>
                     <select name="gender">
                         <option value='Male'>Male</option>
@@ -39,10 +60,12 @@
                         <option value='Other'>Other</option>
                     </select>
                 </p>
+               
             {% endfor %}
+            <div>
+                <input type="submit" value="Submit" />
+            </div>
         </div>
-        <div>
-            <input type="submit" value="Submit" />
         </div>
         </form>
     </div>
